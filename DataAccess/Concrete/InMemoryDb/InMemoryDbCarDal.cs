@@ -1,12 +1,14 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Abstract;
 using Entities.Concrete;
+    using Entities.DTOs;
 
-namespace DataAccess.Concrete.InMemoryDb
+    namespace DataAccess.Concrete.InMemoryDb
 {
     public class InMemoryDbCarDal:ICarDal
     {
@@ -45,9 +47,14 @@ namespace DataAccess.Concrete.InMemoryDb
             }
         }
 
-        public List<Car> GetAllCars()
+        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
         {
-            return _cars;
+             return filter == null ? _cars : _cars.Where(c => c.Equals(filter)).ToList();
+        }
+
+        public Car Get(Expression<Func<Car, bool>> filter)
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(Car car)
@@ -60,15 +67,15 @@ namespace DataAccess.Concrete.InMemoryDb
             cartToUpdate.Description = car.Description;
         }
 
-        public void Delete(int id)
+        public void Delete(Car car)
         {
-            Car carToDelete = _cars.SingleOrDefault(c => c.Id == id);
+            Car carToDelete = _cars.SingleOrDefault(c => c.Id == car.Id);
             _cars.Remove(carToDelete);
         }
 
-        public List<Car> GetById(int brandId)
+        public List<CarDetailsDto> CarDetails()
         {
-            return _cars.Where(c => c.BrandId == brandId).ToList();
+            throw new NotImplementedException();
         }
     }
 }
