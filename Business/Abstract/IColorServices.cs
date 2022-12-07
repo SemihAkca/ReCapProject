@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Utilities.Abstract;
 
 namespace Business.Abstract
 {
     public interface IColorServices
     {
-        void Add(Color color);
-        List<Color> GetAll();
-        Color GetById(int id);
-        void Update(Color color);
-        void Delete(Color color);
+        IResult Add(Color color);
+        IDataResult<List<Color>> GetAll();
+        IDataResult<Color> GetById(int id);
+        IResult Update(Color color);
+        IResult Delete(Color color);
     }
 }

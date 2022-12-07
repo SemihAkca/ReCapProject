@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Abstract;
+using Core.Utilities.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -18,19 +21,20 @@ namespace Business.Concrete
         {
             _colorDal = colorDal;
         }
-        public void Add(Color color)
+        public IResult Add(Color color)
         {
             _colorDal.Add(color);
+            return new SuccesResult(Messages.AddedProduct);
         }
 
-        public List<Color> GetAll()
+        public IDataResult<List<Color>> GetAll()
         {
-            return _colorDal.GetAll();
+            return new SuccesDataResult<List<Color>>(_colorDal.GetAll(),Messages.ListedProducts);
         }
 
-        public Color GetById(int id)
+        public IDataResult<Color> GetById(int id)
         {
-            return _colorDal.Get(color => color.Id == id);
+            return new SuccesDataResult<Color>(_colorDal.Get(color => color.Id == id));
         }
 
         bool ColorStatus(Color color)
@@ -42,27 +46,29 @@ namespace Business.Concrete
             }
             return status;
         }
-        public void Update(Color color)
+        public IResult Update(Color color)
         {
             if (ColorStatus(color))
             {
                 _colorDal.Update(color);
+                return new SuccesResult(Messages.UpdatedProduct);
             }
             else
             {
-                Console.WriteLine("Bu Id'ye ait renk bulunamadı!");
+                return new ErrorResult(Messages.InvalidProduct);
             }
         }
 
-        public void Delete(Color color)
+        public IResult Delete(Color color)
         {
             if (ColorStatus(color))
             {
                 _colorDal.Delete(color);
+                return new SuccesResult(Messages.DeleteProduct);
             }
             else
             {
-                Console.WriteLine("Bu Id'ye ait renk bulunamadı!");
+                return new ErrorResult(Messages.InvalidProduct);
             }
         }
     }

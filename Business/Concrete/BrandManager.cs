@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Abstract;
+using Core.Utilities.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -18,19 +21,20 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-        public void Add(Brand brand)
+        public IResult Add(Brand brand)
         {
             _brandDal.Add(brand);
+            return new SuccesResult(Messages.AddedProduct);
         }
 
-        public List<Brand> GetAll()
+        public IDataResult<List<Brand>> GetAll()
         {
-            return _brandDal.GetAll();
+            return new SuccesDataResult<List<Brand>>(_brandDal.GetAll(),Messages.ListedProducts);
         }
 
-        public Brand GetById(int id)
+        public IDataResult<Brand> GetById(int id)
         {
-            return _brandDal.Get(b => b.Id == id);
+            return new SuccesDataResult<Brand>(_brandDal.Get(b => b.Id == id));
         }
 
         bool BrandStatus(Brand brand)
@@ -42,27 +46,29 @@ namespace Business.Concrete
             }
             return status;
         }
-        public void Update(Brand brand)
+        public IResult Update(Brand brand)
         {
             if (BrandStatus(brand))
             {
                 _brandDal.Update(brand);
+                return new SuccesResult(Messages.UpdatedProduct);
             }
             else
             {
-                Console.WriteLine("Bu Id'ye ait model bulunamadı!");
+                return new ErrorResult(Messages.InvalidProduct);
             }
         }
 
-        public void Delete(Brand brand)
+        public IResult Delete(Brand brand)
         {
             if (BrandStatus(brand))
             {
                 _brandDal.Delete(brand);
+                return new SuccesResult(Messages.DeleteProduct);
             }
             else
             {
-                Console.WriteLine("Bu Id'ye ait model bulunamadı!");
+                return new ErrorResult(Messages.InvalidProduct);
             }
         }
     }

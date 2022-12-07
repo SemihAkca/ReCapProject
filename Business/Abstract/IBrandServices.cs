@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Utilities.Abstract;
 using Entities.Concrete;
 
 namespace Business.Abstract
 {
     public interface IBrandServices
     {
-        void Add(Brand brand);
-        List<Brand> GetAll();
-        Brand GetById(int id);
-        void Update(Brand brand);
-        void Delete(Brand brand);
+        IResult Add(Brand brand);
+        IDataResult<List<Brand>> GetAll();
+        IDataResult<Brand> GetById(int id);
+        IResult Update(Brand brand);
+        IResult Delete(Brand brand);
     }
 }

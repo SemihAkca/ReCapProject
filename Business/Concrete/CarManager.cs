@@ -5,6 +5,9 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Abstract;
+using Core.Utilities.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -21,37 +24,37 @@ namespace Business.Concrete
         }
 
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
             if (car.Description.Length>2 && car.DailyPrice>0)
             {
                 _carDal.Add(car);
+                return new SuccesResult(Messages.AddedProduct);
             }
             else
             {
-                throw new Exception(
-                    "Araba ismi en az iki karakter içermelidir ve arabanın günlük fiyatı 0 dan büyük olmalıdır.");
+                return new ErrorResult("Geçersiz Araç");
             }
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            return new SuccesDataResult<List<Car>>(_carDal.GetAll(),Messages.ListedProducts);
         }
 
-        public List<Car> GetCarsByBrandId(int id)
+        public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
-            return _carDal.GetAll(c => c.BrandId == id);
+            return new SuccesDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id), Messages.ListedProducts);
         }
 
-        public List<Car> GetCarsByColorId(int id)
+        public IDataResult<List<Car>> GetCarsByColorId(int id)
         {
-            return _carDal.GetAll(c => c.ColorId == id);
+            return new SuccesDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id),Messages.ListedProducts);
         }
 
-        public Car Get(int id)
+        public IDataResult<Car> Get(int id)
         {
-            return _carDal.Get(c => c.Id == id);
+            return new SuccesDataResult<Car>(_carDal.Get(c => c.Id == id));
         }
 
         bool CarStatus(Car car)
@@ -63,33 +66,35 @@ namespace Business.Concrete
             }
             return status;
         }
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             if (CarStatus(car))
             {
                 _carDal.Update(car);
+                return new SuccesResult(Messages.UpdatedProduct);
             }
             else
             {
-                Console.WriteLine("Bu Id'ye ait araç bulunamadı!");
+                return new ErrorResult(Messages.InvalidProduct);
             }
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
             if (CarStatus(car))
             {
                _carDal.Delete(car);
+               return new SuccesResult(Messages.DeleteProduct);
             }
             else
             {
-                Console.WriteLine("Bu Id'ye ait araç bulunamadı!");
+                return new ErrorResult(Messages.InvalidProduct);
             }
         }
 
-        public List<CarDetailsDto> GetCarDetails()
+        public IDataResult<List<CarDetailsDto>> GetCarDetails()
         {
-            return _carDal.CarDetails();
+            return new SuccesDataResult<List<CarDetailsDto>>(_carDal.CarDetails(), Messages.ListedProducts);
         }
     }
 }
