@@ -50,7 +50,7 @@ namespace Business.Concrete
             if (status)
             {
                 _rentalDal.Add(rental);
-                return new SuccesResult($"{rental.CarId} id'sine ait araç {rental.RentDate}" + " bu tarihte kiralandı");
+                return new SuccesResult($"{rental.CarId} id'sine ait aracı {rental.RentDate}" + " tarihinde kiraladınız.");
             }
             
             else

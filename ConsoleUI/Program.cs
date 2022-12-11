@@ -196,10 +196,10 @@ void RentalManager()
         { CarId = 5, CustomerId = 4, RentDate = new DateTime(2022, 10, 7), ReturnDate = new DateTime() });
     Console.WriteLine(
         rentalManager.Add(new Rental() 
-        {CarId = 4, CustomerId = 1, RentDate = new DateTime(2022, 6, 10), ReturnDate = new DateTime(2022, 6, 25) }).Message);
+        {CarId = 4, CustomerId = 2, RentDate = new DateTime(2022, 6, 13), ReturnDate = new DateTime(2022, 6, 28) }).Message);
 
     Console.WriteLine(
-        rentalManager.Add(new Rental() { CarId = 14, CustomerId = 14, RentDate = new DateTime(2022, 8, 21) }).Message);
+        rentalManager.Add(new Rental() { CarId = 9, CustomerId = 14, RentDate = new DateTime(2022, 8, 21) }).Message);
 
     foreach (var rental in rentalManager.GetAll().Data)
     {

@@ -52,7 +52,7 @@ namespace Business.Concrete
             return new SuccesDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id),Messages.ListedProducts);
         }
 
-        public IDataResult<Car> Get(int id)
+        public IDataResult<Car> GetById(int id)
         {
             return new SuccesDataResult<Car>(_carDal.Get(c => c.Id == id));
         }
