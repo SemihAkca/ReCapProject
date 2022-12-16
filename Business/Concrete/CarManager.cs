@@ -6,11 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Abstract;
 using Core.Utilities.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 
 namespace Business.Concrete
 {
@@ -26,15 +29,10 @@ namespace Business.Concrete
 
         public IResult Add(Car car)
         {
-            if (car.Description.Length>2 && car.DailyPrice>0)
-            {
-                _carDal.Add(car);
-                return new SuccesResult(Messages.AddedProduct);
-            }
-            else
-            {
-                return new ErrorResult("Geçersiz Araç");
-            }
+            ValidationTool.Validate(new CarValidator(),car);
+
+            _carDal.Add(car);
+            return new SuccesResult(Messages.AddedProduct);
         }
 
         public IDataResult<List<Car>> GetAll()
